@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { SignaturePad } from '@/components/SignaturePad';
-import { ReceiptPDF } from '@/components/ReceiptPDF';
+import { ReceiptViewer } from '@/components/ReceiptViewer';
 import type { Recibo, Empresa } from '@/types';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -233,20 +233,13 @@ export function EntregaSection({ recibos, empresa, onMarcarEntregue }: EntregaPr
       </Dialog>
 
       {/* PDF Dialog */}
-      <Dialog open={showPDFDialog} onOpenChange={setShowPDFDialog}>
-        <DialogContent className="max-w-4xl max-h-[95vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Comprovante de Entrega</DialogTitle>
-          </DialogHeader>
-          {selectedRecibo && (
-            <ReceiptPDF 
-              recibo={selectedRecibo} 
-              empresa={empresa} 
-              tipo="entrega"
-            />
-          )}
-        </DialogContent>
-      </Dialog>
+      <ReceiptViewer
+        recibo={selectedRecibo || { id: '', numero: '', clienteId: '', cliente: {} as any, item: {} as any, dataRecolha: '', dataEntregaPrevista: '', valorEstimado: '', observacoesServico: '', assinaturaCliente: null, assinaturaEmpresa: null, dataCriacao: '', dataAtualizacao: '', entregue: false }}
+        empresa={empresa}
+        tipo="entrega"
+        open={showPDFDialog}
+        onClose={() => setShowPDFDialog(false)}
+      />
     </div>
   );
 }

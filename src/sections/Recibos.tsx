@@ -21,7 +21,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SignaturePad } from '@/components/SignaturePad';
-import { ReceiptPDF } from '@/components/ReceiptPDF';
+import { ReceiptViewer } from '@/components/ReceiptViewer';
 import type { Recibo, Cliente, Empresa, ItemRecolhido } from '@/types';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -254,20 +254,13 @@ export function RecibosSection({
       </Sheet>
 
       {/* View Dialog */}
-      <Dialog open={!!viewingRecibo} onOpenChange={() => setViewingRecibo(null)}>
-        <DialogContent className="max-w-4xl max-h-[95vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Visualizar Recibo</DialogTitle>
-          </DialogHeader>
-          {viewingRecibo && (
-            <ReceiptPDF 
-              recibo={viewingRecibo} 
-              empresa={empresa} 
-              tipo="recolha"
-            />
-          )}
-        </DialogContent>
-      </Dialog>
+      <ReceiptViewer
+        recibo={viewingRecibo || { id: '', numero: '', clienteId: '', cliente: {} as any, item: {} as any, dataRecolha: '', dataEntregaPrevista: '', valorEstimado: '', observacoesServico: '', assinaturaCliente: null, assinaturaEmpresa: null, dataCriacao: '', dataAtualizacao: '', entregue: false }}
+        empresa={empresa}
+        tipo="recolha"
+        open={!!viewingRecibo}
+        onClose={() => setViewingRecibo(null)}
+      />
     </div>
   );
 }
